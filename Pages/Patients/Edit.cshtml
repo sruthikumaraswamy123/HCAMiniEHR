@@ -1,0 +1,34 @@
+﻿@page "{id:int}"
+@model HCAMiniEHR.Pages.Patients.EditModel
+@{
+    ViewData["Title"] = "Edit Patient";
+}
+
+<h1>Edit Patient</h1>
+
+<form method="post">
+    <input type="hidden" asp-for="Patient.PatientId" />
+
+    <div class="mb-3">
+        <label class="form-label">Full Name</label>
+        <input class="form-control" asp-for="Patient.FullName" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Gender</label>
+        <select class="form-select" asp-for="Patient.Gender">
+            <option value="">-- Select --</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Date of Birth</label>
+        <input class="form-control" type="date" asp-for="Patient.DateOfBirth" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Phone</label>
+        <input class="form-control" asp-for="Patient.Phone" />
+    </div>
+    <button type="submit" class="btn btn-primary">Update</button>
+    <a asp-page="Index" class="btn btn-secondary">Cancel</a>
+</form>

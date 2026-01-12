@@ -1,0 +1,30 @@
+﻿@page "{id:int}"
+@model HCAMiniEHR.Pages.Appointments.DeleteModel
+
+@{
+    ViewData["Title"] = "Delete Appointment";
+}
+
+<h2>Delete Appointment</h2>
+
+@if (Model.Appointment != null)
+{
+    <div class="card mb-3">
+        <div class="card-body">
+            <p><strong>Patient:</strong> @Model.Appointment.Patient?.FullName</p>
+            <p><strong>Doctor:</strong> @Model.Appointment.Doctor?.Name</p>
+            <p><strong>Date:</strong> @Model.Appointment.AppointmentDate.ToString("dd-MMM-yyyy")</p>
+            <p><strong>Status:</strong> @Model.Appointment.Status</p>
+        </div>
+    </div>
+
+    <form method="post">
+        <input type="hidden" asp-for="Appointment.AppointmentId" />
+        <button type="submit" class="btn btn-danger">Delete</button>
+        <a asp-page="Index" class="btn btn-secondary">Cancel</a>
+    </form>
+}
+else
+{
+    <div class="alert alert-warning">Appointment not found.</div>
+}

@@ -1,0 +1,45 @@
+﻿@page
+@model HCAMiniEHR.Pages.Patients.CreateModel
+@{
+    ViewData["Title"] = "Create Patient";
+}
+
+<h1>Create Patient</h1>
+
+<form method="post" novalidate>
+    <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+    <div class="mb-3">
+        <label class="form-label">Full Name</label>
+        <input class="form-control" asp-for="Patient.FullName" />
+        <span class="text-danger" asp-validation-for="Patient.FullName"></span>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Gender</label>
+        <select class="form-select" asp-for="Patient.Gender">
+            <option value="">-- Select --</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+        </select>
+        <span class="text-danger" asp-validation-for="Patient.Gender"></span>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Date of Birth</label>
+        <input class="form-control" type="date" asp-for="Patient.DateOfBirth" />
+        <span class="text-danger" asp-validation-for="Patient.DateOfBirth"></span>
+        <div class="form-text">Enter date as yyyy‑MM‑dd or use the date picker.</div>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Phone</label>
+        <input class="form-control" asp-for="Patient.Phone" />
+        <span class="text-danger" asp-validation-for="Patient.Phone"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a asp-page="Index" class="btn btn-secondary">Cancel</a>
+</form>
+
+<partial name="_ValidationScriptsPartial" />

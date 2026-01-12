@@ -1,0 +1,51 @@
+@page
+@model HCAMiniEHR.Pages.LabOrders.CreateModel
+
+@{
+    ViewData["Title"] = "Create Lab Order";
+}
+
+<h1>Create Lab Order</h1>
+
+<h4>LabOrder</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            
+            <div class="form-group mb-3">
+                <label asp-for="LabOrder.AppointmentId" class="control-label">Select Appointment</label>
+                <select asp-for="LabOrder.AppointmentId" class ="form-select" asp-items="Model.AppointmentList"></select>
+            </div>
+            
+            <div class="form-group mb-3">
+                <label asp-for="LabOrder.TestName" class="control-label"></label>
+                <input asp-for="LabOrder.TestName" class="form-control" />
+                <span asp-validation-for="LabOrder.TestName" class="text-danger"></span>
+            </div>
+            
+            <!-- Result and Status defaults/hidden or editable? -->
+            <!-- Typically Result is empty at creation -->
+
+             <div class="form-group mb-3">
+                <label asp-for="LabOrder.Status" class="control-label"></label>
+                <select asp-for="LabOrder.Status" class="form-select">
+                    <option value="Pending">Pending</option>
+                    <option value="Completed">Completed</option>
+                    <option value="Cancelled">Cancelled</option>
+                </select>
+                <span asp-validation-for="LabOrder.Status" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+                <a asp-page="Index" class="btn btn-secondary">Back to List</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

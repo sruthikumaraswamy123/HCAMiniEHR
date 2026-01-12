@@ -1,0 +1,52 @@
+﻿@page "{id:int}"
+@model HCAMiniEHR.Pages.Appointments.EditModel
+
+@{
+    ViewData["Title"] = "Edit Appointment";
+}
+
+<h2>Edit Appointment</h2>
+
+<form method="post">
+    <input type="hidden" asp-for="Appointment.AppointmentId" />
+
+    <div class="mb-3">
+        <label>Patient</label>
+        <select asp-for="Appointment.PatientId"
+                class="form-control"
+                asp-items="Model.PatientList">
+            <option value="">-- Select Patient --</option>
+        </select>
+        <span asp-validation-for="Appointment.PatientId" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label>Doctor</label>
+        <select asp-for="Appointment.DoctorId"
+                class="form-control"
+                asp-items="Model.DoctorList">
+            <option value="">-- Select Doctor --</option>
+        </select>
+        <span asp-validation-for="Appointment.DoctorId" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label>Date</label>
+        <input asp-for="Appointment.AppointmentDate"
+               type="date"
+               class="form-control" />
+        <span asp-validation-for="Appointment.AppointmentDate" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label>Status</label>
+        <select asp-for="Appointment.Status" class="form-control">
+            <option>Scheduled</option>
+            <option>Completed</option>
+            <option>Cancelled</option>
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Update</button>
+    <a asp-page="Index" class="btn btn-secondary">Cancel</a>
+</form>

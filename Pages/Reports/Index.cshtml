@@ -1,0 +1,129 @@
+@page
+@model HCAMiniEHR.Pages.Reports.IndexModel
+@{
+    ViewData["Title"] = "Reports Dashboard";
+}
+
+<div class="row mb-4">
+    <div class="col-md-12">
+        <h1 class="display-4 text-primary">Reports Dashboard</h1>
+        <hr />
+    </div>
+</div>
+
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+  <li class="nav-item" role="presentation">
+    <button class="nav-link active" id="pending-tab" data-bs-toggle="tab" data-bs-target="#pending" type="button" role="tab">Pending Lab Orders</button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link" id="followup-tab" data-bs-toggle="tab" data-bs-target="#followup" type="button" role="tab">No Follow-Up</button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link" id="productivity-tab" data-bs-toggle="tab" data-bs-target="#productivity" type="button" role="tab">Doctor Productivity</button>
+  </li>
+</ul>
+
+<div class="tab-content" id="myTabContent">
+  <!-- Pending Lab Orders -->
+  <div class="tab-pane fade show active p-3" id="pending" role="tabpanel">
+    <h3>Pending Lab Orders</h3>
+    @if (Model.PendingLabOrders.Any())
+    {
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Order ID</th>
+                    <th>Test Name</th>
+                    <th>Patient</th>
+                    <th>Appointment Date</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var order in Model.PendingLabOrders)
+                {
+                    <tr>
+                        <td>@order.LabOrderId</td>
+                        <td>@order.TestName</td>
+                        <td>
+                            @if(order.Appointment?.Patient != null)
+                            {
+                                <span>@order.Appointment.Patient.FullName</span>
+                            }
+                            else
+                            {
+                                <span class="text-muted">N/A</span>
+                            }
+                        </td>
+                        <td>@(order.Appointment?.AppointmentDate.ToShortDateString() ?? "N/A")</td>
+                        <td><span class="badge bg-warning text-dark">@order.Status</span></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <div class="alert alert-info">No pending lab orders found.</div>
+    }
+  </div>
+
+  <!-- Patients No Follow-Up -->
+  <div class="tab-pane fade p-3" id="followup" role="tabpanel">
+    <h3>Patients Without Follow-Up</h3>
+    @if (Model.PatientsNoFollowUp.Any())
+    {
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Patient ID</th>
+                    <th>Full Name</th>
+                    <th>Phone</th>
+                    <th>Last Appointment</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var p in Model.PatientsNoFollowUp)
+                {
+                    <tr>
+                        <td>@p.PatientId</td>
+                        <td>@p.FullName</td>
+                        <td>@p.Phone</td>
+                        <td>N/A</td> <!-- Logic for last appointment could be added but currently strict prompt says "without follow up" -->
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <div class="alert alert-success">All patients have follow-ups scheduled!</div>
+    }
+  </div>
+
+  <!-- Doctor Productivity -->
+  <div class="tab-pane fade p-3" id="productivity" role="tabpanel">
+    <h3>Doctor Productivity</h3>
+    @if (Model.DoctorProductivity.Any())
+    {
+        <div class="row">
+            @foreach (var doc in Model.DoctorProductivity)
+            {
+                <div class="col-md-4 mb-3">
+                    <div class="card text-center shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title text-success">@doc.DoctorName</h5>
+                            <p class="card-text display-6">@doc.AppointmentCount</p>
+                            <p class="text-muted">Appointments</p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-secondary">No data available.</div>
+    }
+  </div>
+</div>

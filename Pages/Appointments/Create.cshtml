@@ -1,0 +1,20 @@
+﻿@page
+@model HCAMiniEHR.Pages.Appointments.CreateModel
+
+<h2>Add Appointment</h2>
+
+<form method="post">
+    <label>Patient</label>
+    <select asp-for="Appointment.PatientId" asp-items="Model.PatientList"></select>
+
+    <label>Doctor</label>
+    <select asp-for="Appointment.DoctorId" asp-items="Model.DoctorList"></select>
+
+    <label>Date</label>
+    <input asp-for="Appointment.AppointmentDate" type="date" />
+
+    <label>Status</label>
+    <input asp-for="Appointment.Status" />
+
+    <button type="submit">Save</button>
+</form>
