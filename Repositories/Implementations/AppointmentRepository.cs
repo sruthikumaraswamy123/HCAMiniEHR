@@ -4,8 +4,10 @@ using HCAMiniEHR.Models;
 using HCAMiniEHR.Repositories;
 using Microsoft.EntityFrameworkCore;
 
-public class AppointmentRepository : IAppointmentRepository
+namespace HCAMiniEHR.Repositories.Implementations
 {
+    public class AppointmentRepository : IAppointmentRepository
+    {
     private readonly ApplicationDbContext _context;
 
     public AppointmentRepository(ApplicationDbContext context)
@@ -37,12 +39,23 @@ public class AppointmentRepository : IAppointmentRepository
 
     public async Task UpdateAsync(Appointment appointment)
     {
-        _context.Appointments.Update(appointment);
-        await _context.SaveChangesAsync();
+        var existing = await _context.Appointments.FindAsync(appointment.AppointmentId);
+        if (existing != null)
+        {
+            _context.Entry(existing).CurrentValues.SetValues(appointment);
+            await _context.SaveChangesAsync();
+        }
     }
 
     public async Task DeleteAsync(int id)
     {
+        // Handle related lab orders first to avoid FK violations
+        var relatedLabs = await _context.LabOrders.Where(l => l.AppointmentId == id).ToListAsync();
+        if (relatedLabs.Any())
+        {
+            _context.LabOrders.RemoveRange(relatedLabs);
+        }
+
         var appt = await _context.Appointments.FindAsync(id);
         if (appt != null)
         {
@@ -72,5 +85,6 @@ public class AppointmentRepository : IAppointmentRepository
             .Include(a => a.Doctor)
             .Where(a => a.PatientId == patientId)
             .ToListAsync();
+    }
     }
 }

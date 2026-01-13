@@ -5,48 +5,66 @@
     ViewData["Title"] = "Edit Appointment";
 }
 
-<h2>Edit Appointment</h2>
+<h2><i class="bi bi-pencil-square me-2"></i>Edit Appointment</h2>
+<hr />
 
-<form method="post">
-    <input type="hidden" asp-for="Appointment.AppointmentId" />
+<div class="row">
+    <div class="col-md-6">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Appointment.AppointmentId" />
 
-    <div class="mb-3">
-        <label>Patient</label>
-        <select asp-for="Appointment.PatientId"
-                class="form-control"
-                asp-items="Model.PatientList">
-            <option value="">-- Select Patient --</option>
-        </select>
-        <span asp-validation-for="Appointment.PatientId" class="text-danger"></span>
+            <div class="mb-3">
+                <label asp-for="Appointment.PatientId" class="form-label">Patient</label>
+                <select asp-for="Appointment.PatientId"
+                        class="form-select"
+                        asp-items="Model.PatientList">
+                    <option value="">-- Select Patient --</option>
+                </select>
+                <span asp-validation-for="Appointment.PatientId" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Appointment.DoctorId" class="form-label">Doctor</label>
+                <select asp-for="Appointment.DoctorId"
+                        class="form-select"
+                        asp-items="Model.DoctorList">
+                    <option value="">-- Select Doctor --</option>
+                </select>
+                <span asp-validation-for="Appointment.DoctorId" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Appointment.AppointmentDate" class="form-label">Date</label>
+                <input asp-for="Appointment.AppointmentDate"
+                       type="date"
+                       class="form-control" />
+                <span asp-validation-for="Appointment.AppointmentDate" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Appointment.Reason" class="form-label">Reason</label>
+                <textarea asp-for="Appointment.Reason" class="form-control" rows="3"></textarea>
+                <span asp-validation-for="Appointment.Reason" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Appointment.Status" class="form-label">Status</label>
+                <select asp-for="Appointment.Status" class="form-select">
+                    <option value="Scheduled">Scheduled</option>
+                    <option value="Completed">Completed</option>
+                    <option value="Cancelled">Cancelled</option>
+                </select>
+            </div>
+
+            <div class="mt-4">
+                <button type="submit" class="btn btn-primary"><i class="bi bi-save"></i> Update Appointment</button>
+                <a asp-page="Index" class="btn btn-outline-secondary ms-2">Cancel</a>
+            </div>
+        </form>
     </div>
+</div>
 
-    <div class="mb-3">
-        <label>Doctor</label>
-        <select asp-for="Appointment.DoctorId"
-                class="form-control"
-                asp-items="Model.DoctorList">
-            <option value="">-- Select Doctor --</option>
-        </select>
-        <span asp-validation-for="Appointment.DoctorId" class="text-danger"></span>
-    </div>
-
-    <div class="mb-3">
-        <label>Date</label>
-        <input asp-for="Appointment.AppointmentDate"
-               type="date"
-               class="form-control" />
-        <span asp-validation-for="Appointment.AppointmentDate" class="text-danger"></span>
-    </div>
-
-    <div class="mb-3">
-        <label>Status</label>
-        <select asp-for="Appointment.Status" class="form-control">
-            <option>Scheduled</option>
-            <option>Completed</option>
-            <option>Cancelled</option>
-        </select>
-    </div>
-
-    <button type="submit" class="btn btn-primary">Update</button>
-    <a asp-page="Index" class="btn btn-secondary">Cancel</a>
-</form>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

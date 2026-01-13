@@ -11,7 +11,7 @@ namespace HCAMiniEHR.Models
         // FK to Appointment
         [ForeignKey("Appointment")]
         public int AppointmentId { get; set; }
-        public Appointment Appointment { get; set; } = null!;
+        public Appointment? Appointment { get; set; } = null!;
 
         public string TestName { get; set; } = string.Empty;
         public string Result { get; set; } = string.Empty;

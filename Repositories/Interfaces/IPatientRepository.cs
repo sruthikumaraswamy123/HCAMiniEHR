@@ -7,4 +7,5 @@ public interface IPatientRepository
     Task AddAsync(Patient patient);
     Task UpdateAsync(Patient patient);
     Task DeleteAsync(int id);
+    Task<bool> ExistsAsync(string fullName, string phone, int? excludeId = null);
 }

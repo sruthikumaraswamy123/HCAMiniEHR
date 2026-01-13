@@ -35,6 +35,12 @@ namespace HCAMiniEHR.Pages.Patients
 
             try
             {
+                if (await _patientService.IsDuplicateAsync(Patient.FullName, Patient.Phone))
+                {
+                    ModelState.AddModelError("Patient.FullName", "A patient with this name and phone number already exists.");
+                    return Page();
+                }
+
                 await _patientService.CreatePatientAsync(Patient);
                 _logger.LogInformation("Created patient {FullName} (Phone: {Phone})", Patient.FullName, Patient.Phone);
                 return RedirectToPage("Index");

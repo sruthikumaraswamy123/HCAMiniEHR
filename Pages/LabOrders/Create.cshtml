@@ -7,28 +7,34 @@
 
 <h1>Create Lab Order</h1>
 
-<h4>LabOrder</h4>
+<h4>Lab Order</h4>
 <hr />
+
 <div class="row">
     <div class="col-md-4">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            
+
+            <!-- Appointment Dropdown -->
             <div class="form-group mb-3">
                 <label asp-for="LabOrder.AppointmentId" class="control-label">Select Appointment</label>
-                <select asp-for="LabOrder.AppointmentId" class ="form-select" asp-items="Model.AppointmentList"></select>
+                <select asp-for="LabOrder.AppointmentId"
+                        class="form-select"
+                        asp-items="Model.AppointmentList">
+                    <option value="">-- Select Appointment --</option>
+                </select>
+                <span asp-validation-for="LabOrder.AppointmentId" class="text-danger"></span>
             </div>
-            
+
+            <!-- Test Name -->
             <div class="form-group mb-3">
                 <label asp-for="LabOrder.TestName" class="control-label"></label>
                 <input asp-for="LabOrder.TestName" class="form-control" />
                 <span asp-validation-for="LabOrder.TestName" class="text-danger"></span>
             </div>
-            
-            <!-- Result and Status defaults/hidden or editable? -->
-            <!-- Typically Result is empty at creation -->
 
-             <div class="form-group mb-3">
+            <!-- Status -->
+            <div class="form-group mb-3">
                 <label asp-for="LabOrder.Status" class="control-label"></label>
                 <select asp-for="LabOrder.Status" class="form-select">
                     <option value="Pending">Pending</option>
@@ -47,5 +53,7 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

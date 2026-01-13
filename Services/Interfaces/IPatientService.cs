@@ -1,10 +1,14 @@
 ﻿using HCAMiniEHR.Models;
 
-public interface IPatientService
+namespace HCAMiniEHR.Services.Interfaces
 {
-    Task<List<Patient>> GetAllPatientsAsync();
-    Task<Patient?> GetPatientByIdAsync(int id);
-    Task CreatePatientAsync(Patient patient);
-    Task UpdatePatientAsync(Patient patient);
-    Task DeletePatientAsync(int id);
+    public interface IPatientService
+    {
+        Task<List<Patient>> GetAllPatientsAsync();
+        Task<Patient?> GetPatientByIdAsync(int id);
+        Task CreatePatientAsync(Patient patient);
+        Task UpdatePatientAsync(Patient patient);
+        Task DeletePatientAsync(int id);
+        Task<bool> IsDuplicateAsync(string fullName, string phone, int? excludeId = null);
+    }
 }

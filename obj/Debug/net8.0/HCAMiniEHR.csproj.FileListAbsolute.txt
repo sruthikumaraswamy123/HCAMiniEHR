@@ -137,3 +137,5 @@ C:\sruthibandi\HCAMiniEHR\HCAMiniEHR\obj\Debug\net8.0\refint\HCAMiniEHR.dll
 C:\sruthibandi\HCAMiniEHR\HCAMiniEHR\obj\Debug\net8.0\HCAMiniEHR.pdb
 C:\sruthibandi\HCAMiniEHR\HCAMiniEHR\obj\Debug\net8.0\HCAMiniEHR.genruntimeconfig.cache
 C:\sruthibandi\HCAMiniEHR\HCAMiniEHR\obj\Debug\net8.0\ref\HCAMiniEHR.dll
+C:\sruthibandi\HCAMiniEHR\HCAMiniEHR\obj\Debug\net8.0\HCAMiniEHR.sourcelink.json
+C:\sruthibandi\HCAMiniEHR\HCAMiniEHR\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt

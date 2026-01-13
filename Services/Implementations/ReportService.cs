@@ -18,7 +18,7 @@ namespace HCAMiniEHR.Services.Implementations
         {
             return await _context.LabOrders
                 .Include(lo => lo.Appointment)
-                .ThenInclude(a => a.Patient)
+                    .ThenInclude(a => a!.Patient)
                 .Where(lo => lo.Status == "Pending")
                 .ToListAsync();
         }
@@ -35,7 +35,6 @@ namespace HCAMiniEHR.Services.Implementations
         public async Task<List<DoctorProductivityDto>> GetDoctorProductivityAsync()
         {
             return await _context.Appointments
-                .Include(a => a.Doctor)
                 .GroupBy(a => a.Doctor != null ? a.Doctor.Name : "Unknown")
                 .Select(g => new DoctorProductivityDto
                 {

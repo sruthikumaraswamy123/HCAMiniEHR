@@ -17,6 +17,9 @@ namespace HCAMiniEHR.Pages.Reports
         public List<Patient> PatientsNoFollowUp { get; set; } = new();
         public List<DoctorProductivityDto> DoctorProductivity { get; set; } = new();
 
+        // Add this property to get the pending count
+        public int PendingLabOrdersCount => PendingLabOrders.Count;
+
         public async Task OnGetAsync()
         {
             PendingLabOrders = await _reportService.GetPendingLabOrdersAsync();

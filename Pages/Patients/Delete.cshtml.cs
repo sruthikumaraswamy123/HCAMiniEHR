@@ -16,11 +16,11 @@ namespace HCAMiniEHR.Pages.Patients
         }
 
         [BindProperty]
-        public Patient Patient { get; set; }
+        public Patient Patient { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(int id)
         {
-            Patient = await _patientService.GetPatientByIdAsync(id);
+            Patient = (await _patientService.GetPatientByIdAsync(id))!;
             if (Patient == null)
                 return RedirectToPage("Index");
             return Page();

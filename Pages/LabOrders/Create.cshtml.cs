@@ -24,16 +24,7 @@ namespace HCAMiniEHR.Pages.LabOrders
 
         public async Task<IActionResult> OnGetAsync()
         {
-            var appts = await _apptService.GetAllAsync();
-            // Show Patient Name and Date in Dropdown
-            // Needs Appointment to include Patient. ensure GetAllAsync includes them.
-            // Repo GetAllAsync includes Patient/Doctor (Step 253).
-            
-            AppointmentList = new SelectList(appts.Select(a => new {
-                Id = a.AppointmentId,
-                Text = $"Appt #{a.AppointmentId} - {a.Patient?.FullName} ({a.AppointmentDate.ToShortDateString()})"
-            }), "Id", "Text");
-            
+            await LoadAppointments();
             return Page();
         }
 
@@ -41,20 +32,33 @@ namespace HCAMiniEHR.Pages.LabOrders
         {
             if (!ModelState.IsValid)
             {
-                // Reload list on error
-                 var appts = await _apptService.GetAllAsync();
-                 AppointmentList = new SelectList(appts.Select(a => new {
-                    Id = a.AppointmentId,
-                    Text = $"Appt #{a.AppointmentId} - {a.Patient?.FullName} ({a.AppointmentDate.ToShortDateString()})"
-                }), "Id", "Text");
+                await LoadAppointments();
                 return Page();
             }
 
+            Console.Write(LabOrder);
+
             LabOrder.OrderDate = DateTime.Now;
-            LabOrder.Status = "Pending"; // Default
+            LabOrder.Status = "Pending";
+
             await _labService.AddAsync(LabOrder);
 
             return RedirectToPage("./Index");
+        }
+
+        private async Task LoadAppointments()
+        {
+            var appts = await _apptService.GetAllAsync();
+
+            AppointmentList = new SelectList(
+                appts.Select(a => new
+                {
+                    Id = a.AppointmentId,
+                    Text = $"Appt #{a.AppointmentId} - {a.Patient?.FullName} ({a.AppointmentDate:dd-MMM-yyyy})"
+                }),
+                "Id",
+                "Text"
+            );
         }
     }
 }

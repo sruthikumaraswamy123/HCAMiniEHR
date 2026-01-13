@@ -16,7 +16,7 @@ namespace HCAMiniEHR.Services.Implementations
         }
 
         public Task<List<LabOrder>> GetAllAsync() => _repo.GetAllLabOrdersAsync();
-        public Task<LabOrder> GetByIdAsync(int id) => _repo.GetLabOrderByIdAsync(id);
+        public Task<LabOrder?> GetByIdAsync(int id) => _repo.GetLabOrderByIdAsync(id);
         public Task AddAsync(LabOrder labOrder) => _repo.AddLabOrderAsync(labOrder);
         public Task UpdateAsync(LabOrder labOrder) => _repo.UpdateLabOrderAsync(labOrder);
         public Task DeleteAsync(int id) => _repo.DeleteLabOrderAsync(id);

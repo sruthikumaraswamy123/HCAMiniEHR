@@ -15,7 +15,7 @@ namespace HCAMiniEHR.Repositories.Implementations
         public async Task<List<Doctor>> GetAllDoctorsAsync()
             => await _context.Doctors.Include(d => d.Appointments).ToListAsync();
 
-        public async Task<Doctor> GetDoctorByIdAsync(int id)
+        public async Task<Doctor?> GetDoctorByIdAsync(int id)
             => await _context.Doctors.Include(d => d.Appointments).FirstOrDefaultAsync(d => d.DoctorId == id);
 
         public async Task AddDoctorAsync(Doctor doctor) { _context.Doctors.Add(doctor); await _context.SaveChangesAsync(); }

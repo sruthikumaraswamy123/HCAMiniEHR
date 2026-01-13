@@ -1,20 +1,22 @@
-using HCAMiniEHR.Data;
-using HCAMiniEHR.Data.DbContext;
 using HCAMiniEHR.Models;
+using HCAMiniEHR.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 
 namespace HCAMiniEHR.Pages.Appointments
 {
     public class EditModel : PageModel
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IAppointmentService _appointmentService;
+        private readonly IPatientService _patientService;
+        private readonly IDoctorService _doctorService;
 
-        public EditModel(ApplicationDbContext context)
+        public EditModel(IAppointmentService appointmentService, IPatientService patientService, IDoctorService doctorService)
         {
-            _context = context;
+            _appointmentService = appointmentService;
+            _patientService = patientService;
+            _doctorService = doctorService;
         }
 
         [BindProperty]
@@ -25,11 +27,14 @@ namespace HCAMiniEHR.Pages.Appointments
 
         public async Task<IActionResult> OnGetAsync(int id)
         {
-            Appointment = await _context.Appointments.FindAsync(id);
-
-            if (Appointment == null)
+            var appt = await _appointmentService.GetByIdAsync(id);
+            if (appt == null)
+            {
+                TempData["ErrorMessage"] = "Appointment not found.";
                 return RedirectToPage("Index");
+            }
 
+            Appointment = appt;
             await LoadLists();
             return Page();
         }
@@ -42,20 +47,28 @@ namespace HCAMiniEHR.Pages.Appointments
                 return Page();
             }
 
-            _context.Attach(Appointment).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
-
-            return RedirectToPage("Index");
+            try
+            {
+                await _appointmentService.UpdateAsync(Appointment);
+                TempData["SuccessMessage"] = "Appointment updated successfully.";
+                return RedirectToPage("Index");
+            }
+            catch (Exception ex)
+            {
+                await LoadLists();
+                ModelState.AddModelError(string.Empty, $"Error updating appointment: {ex.Message}");
+                return Page();
+            }
         }
 
         private async Task LoadLists()
         {
             PatientList = new SelectList(
-                await _context.Patients.ToListAsync(),
+                await _patientService.GetAllPatientsAsync(),
                 "PatientId", "FullName");
 
             DoctorList = new SelectList(
-                await _context.Doctors.ToListAsync(),
+                await _doctorService.GetAllDoctorsAsync(),
                 "DoctorId", "Name");
         }
     }

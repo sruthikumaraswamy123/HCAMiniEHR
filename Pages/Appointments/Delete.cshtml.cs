@@ -1,19 +1,17 @@
-using HCAMiniEHR.Data;
-using HCAMiniEHR.Data.DbContext;
 using HCAMiniEHR.Models;
+using HCAMiniEHR.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 
 namespace HCAMiniEHR.Pages.Appointments
 {
     public class DeleteModel : PageModel
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IAppointmentService _service;
 
-        public DeleteModel(ApplicationDbContext context)
+        public DeleteModel(IAppointmentService service)
         {
-            _context = context;
+            _service = service;
         }
 
         [BindProperty]
@@ -21,28 +19,31 @@ namespace HCAMiniEHR.Pages.Appointments
 
         public async Task<IActionResult> OnGetAsync(int id)
         {
-            Appointment = await _context.Appointments
-                .Include(a => a.Patient)
-                .Include(a => a.Doctor)
-                .FirstOrDefaultAsync(a => a.AppointmentId == id);
+            Appointment = await _service.GetByIdAsync(id);
 
             if (Appointment == null)
+            {
+                TempData["ErrorMessage"] = "Appointment not found.";
                 return RedirectToPage("Index");
+            }
 
             return Page();
         }
 
         public async Task<IActionResult> OnPostAsync(int id)
         {
-            var appt = await _context.Appointments.FindAsync(id);
-
-            if (appt != null)
+            try
             {
-                _context.Appointments.Remove(appt);
-                await _context.SaveChangesAsync();
+                await _service.DeleteAsync(id);
+                TempData["SuccessMessage"] = "Appointment deleted successfully.";
+                return RedirectToPage("Index");
             }
-
-            return RedirectToPage("Index");
+            catch (Exception ex)
+            {
+                Appointment = await _service.GetByIdAsync(id);
+                ModelState.AddModelError(string.Empty, $"Error deleting appointment: {ex.Message}");
+                return Page();
+            }
         }
     }
 }
